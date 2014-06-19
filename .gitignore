@@ -4,3 +4,8 @@ dependencies
 spring-shell.log
 target
 build
+.idea
+.settings
+.eclipse
+.project
+.gradle
