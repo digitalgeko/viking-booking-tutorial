@@ -9,3 +9,5 @@ build
 .eclipse
 .project
 .gradle
+*.iml
+dev.conf

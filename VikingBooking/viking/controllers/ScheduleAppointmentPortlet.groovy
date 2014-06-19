@@ -1,6 +1,7 @@
 package controllers
 
 import com.liferay.portal.kernel.cal.TZSRecurrence
+import com.liferay.portal.kernel.util.CalendarUtil
 import com.liferay.portal.kernel.util.StringPool
 import com.liferay.portlet.calendar.service.CalEventLocalServiceUtil
 import models.UserAvailability
@@ -26,6 +27,7 @@ class ScheduleAppointmentPortlet extends Controller {
 		def formParams = binder.fromJsonBody(Map.class)
 
 		h.serviceContext.scopeGroupId = formParams.userId;
+		CalendarUtil.
 		CalEventLocalServiceUtil.addEvent(
 				formParams.userId,
 				"Appointment",
