@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE display PUBLIC "-//Liferay//DTD Display 6.1.0//EN" "http://www.liferay.com/dtd/liferay-display_6_1_0.dtd">
+
+<display>
+	<% 
+		portletByCategory =  portlets.groupBy { portlet ->
+			portletName = portlet - 'viking/controllers/' - 'Portlet.groovy'
+			conf[portletName]?.display?.category?:projectName
+		}
+	%>
+	<% portletByCategory.each {
+		category = it.key
+		categoryPortlets = it.value
+	%>
+		<% if (category) { %>
+				<category name="${category}">
+			        <% categoryPortlets.each { portlet ->
+			        dashedName = portlet.replaceAll(/(\B[A-Z])/, '-$1').toLowerCase() - 'viking/controllers/' - '.groovy'
+			        %>
+			        <portlet id="${dashedName}" />
+			        <% } %>
+			    </category>    		
+		<% } else { %>
+				<% categoryPortlets.each { portlet ->
+					portletName = portlet - 'viking/controllers/' - 'Portlet.groovy'
+				    dashedName = portlet.replaceAll(/(\B[A-Z])/, '-$1').toLowerCase() - 'viking/controllers/' - '.groovy'
+				%>
+					<category name="${portletName}">
+				        <portlet id="${dashedName}" />
+				    </category>    		
+			    <% } %>
+		<% } %>
+    	
+    <% } %>
+    
+</display>

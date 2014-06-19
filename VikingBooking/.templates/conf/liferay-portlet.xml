@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!DOCTYPE liferay-portlet-app PUBLIC "-//Liferay//DTD Portlet Application 6.1.0//EN" "http://www.liferay.com/dtd/liferay-portlet-app_6_1_0.dtd">
+
+<liferay-portlet-app>
+    <% def vkCtrlPath = 'viking' + File.separator + 'controllers' + File.separator %>
+    <% portlets.each { portlet ->
+        dashedName = portlet.replaceAll(/(\B[A-Z])/, '-$1').toLowerCase() - vkCtrlPath - '.groovy'
+        dashedPortletName = dashedName
+        portletName = portlet - vkCtrlPath - 'Portlet.groovy'
+        portletConf = conf[portletName]
+        %>
+        <portlet>
+            <portlet-name>${dashedName}</portlet-name>
+            <icon>/icon.png</icon>
+            <friendly-url-mapper-class>com.liferay.portal.kernel.portlet.DefaultFriendlyURLMapper</friendly-url-mapper-class>
+            <friendly-url-mapping>${dashedPortletName}</friendly-url-mapping>
+            <friendly-url-routes>urlmappings/${dashedName}-friendly-url-routes.xml</friendly-url-routes>
+            <% if (portletConf.controlPanel) { %>
+                    <control-panel-entry-category>${portletConf.controlPanel.category}</control-panel-entry-category>
+                    <control-panel-entry-weight>${portletConf.controlPanel.weight}</control-panel-entry-weight>
+            <% } %>
+            <instanceable>${portletConf.instanceable?:false}</instanceable>
+            <header-portlet-css>/css/main.css</header-portlet-css>
+            <header-portlet-css>/css/datepicker.css</header-portlet-css>
+            <header-portlet-javascript>/js/jquery-1.10.2.min.js</header-portlet-javascript>
+
+            <footer-portlet-javascript>/js/angular/angular.min.js</footer-portlet-javascript>
+            <footer-portlet-javascript>/js/angular/checklist-model.js</footer-portlet-javascript>
+            <footer-portlet-javascript>/js/angular/init.js</footer-portlet-javascript>
+
+            <% javascripts.each { javascript -> %>
+                <footer-portlet-javascript>/js/${javascript}</footer-portlet-javascript>
+            <% } %>
+        </portlet>
+    <% } %>
+
+    <role-mapper>
+        <role-name>administrator</role-name>
+        <role-link>Administrator</role-link>
+    </role-mapper>
+    <role-mapper>
+        <role-name>guest</role-name>
+        <role-link>Guest</role-link>
+    </role-mapper>
+    <role-mapper>
+        <role-name>power-user</role-name>
+        <role-link>Power User</role-link>
+    </role-mapper>
+    <role-mapper>
+        <role-name>user</role-name>
+        <role-link>User</role-link>
+    </role-mapper>
+</liferay-portlet-app>

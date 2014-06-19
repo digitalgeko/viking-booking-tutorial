@@ -1,0 +1,843 @@
+@import "compass";
+@import "mixins";
+
+@import url(custom_common.css);
+
+\$dockbarGradientEnd: #1273C7;
+\$dockbarGradientStart: #118ADE;
+
+\$dockbarOpenGradientEnd: #0993DD;
+\$dockbarOpenGradientStart: #0EA6F9;
+
+\$green: #8dc63f;
+\$green-dark: #61941c;
+\$green-soft: #dbedc2;
+\$gray: #575757; /* Used for color text */
+\$gray-inactive: #aaaaaa; /* Used for color inactive text and form borders */
+\$gray-softlight: #ececec; /* footer color */
+\$gray-light: #e3e3e3;
+\$gray-medium: #b3b3b3; /* Used for inactive icons */
+\$gray-dark: #444444;
+
+/* FONTS:
+font-family: "Oxygen", sans-serif;
+font-family: "Ubuntu", sans-serif;
+
+font-family: "Oxygen", Arial, sans-serif; font-weight: 400; --> Normal 400
+font-family: "Oxygen", Arial, sans-serif; font-weight: 700; --> Bold 700
+
+font-family: "Ubuntu", Arial, sans-serif; font-weight: 400; --> Normal 400
+font-family: "Ubuntu", Arial, sans-serif; font-weight: 400italic;  --> Normal 400 italic */
+
+/* ---------- Base styles ---------- */
+
+.aui {
+    .separator {
+        border-color: #BFBFBF transparent #FFF;
+        border-style: solid;
+        border-width: 1px 0;
+    }
+
+    #wrapper {
+        position: relative;
+        font-family: "Ubuntu", Arial, sans-serif;
+        font-weight: 400;
+        color: \$gray;
+        padding: 0;
+    }
+    header {
+        background-color: \$green;
+        padding: 0 10%;
+            h1 {margin: 0;}
+    }
+    a {
+        color: \$green;
+    }
+    a:hover {
+        color: \$green-dark;
+    }
+    #content {
+        padding: 0 10%;
+    }
+
+    .site-title {
+        a:hover {
+            text-decoration: none;
+        }
+
+        .site-name {
+            display: inline-block;
+        }
+    }
+
+    #skip-to-content:focus {
+        clip: rect(auto auto auto auto);
+        margin-top: 35px;
+        right: 5px;
+        z-index: 200;
+    }
+
+    #sign-in {
+        background: url(@theme_image_path@/common/key.png) no-repeat 3px 50%;
+        font-weight: bold;
+        padding: 5px 5px 5px 25px;
+        position: absolute;
+        right: 0;
+        top: -1.2em;
+    }
+
+    .redirected-to-message {
+        margin-right: 10px;
+
+        a {
+            background: #ECFBFF;
+            border: 1px solid #ADE5FA;
+            color: #8D8D8D;
+            padding: 5px;
+        }
+    }
+
+    .site-navigation {
+        margin-bottom: 0px;
+        float: right;
+        width: 70%;
+    }
+
+    .taglib-portal-message {
+        margin-bottom: 0;
+    }
+    legend {
+        color: \$gray;
+    }
+
+    /* ---------- Dockbar ---------- */
+
+    .dockbar {
+        &.navbar {
+            .container .btn {
+                border-color: transparent;
+
+                &:hover, &:focus {
+                    background-color: transparent;
+                    text-decoration: underline;
+                }
+            }
+
+            .nav {
+                li {
+                    &.dropdown {
+                        &.active {
+                            .dropdown-toggle {
+                                background-color: transparent;
+
+                                &:hover {
+                                    color: #FFF;
+                                }
+                            }
+
+                            &:hover {
+                                background-color: \$green-dark;
+                            }
+                        }
+
+                        &.site-variations .dropdown-menu {
+                            background-color: #026ED2;
+                        }
+                    }
+                }
+
+                > li {
+                    > a {
+                        padding: 6px 15px;
+
+                        &:hover {
+                            background-color: #2FA4F5;
+                        }
+                    }
+                }
+            }
+        }
+
+        .info-button {
+            top: 9px;
+
+            a {
+                margin-top: -4px;
+
+                &:hover {
+                    color: #FFF;
+                }
+            }
+        }
+
+        .staging-bar {
+            .site-variations {
+                color: #FFF;
+
+                li a {
+                    color: #FFF;
+                    font-weight: 400;
+                }
+
+                .btn-link {
+                    color: #FFF;
+                    font-size: 12px;
+                }
+            }
+        }
+    }
+
+    .dockbar-split .dockbar {
+        .info-button {
+            top: 9px;
+        }
+
+        .navbar-inner {
+            .nav {
+                > li {
+                    background-color: \$green;
+                }
+            }
+
+            .nav-account-controls {
+                border-top: 1px solid #00AEFF;
+
+                &.nav-account-controls-notice {
+                    margin-top: 10px;
+                    top: 50px;
+                }
+            }
+
+            .nav-add-controls {
+                background: transparent;
+                border-top-width: 0;
+
+                &.nav-add-controls-notice {
+                    top: 70px;
+                }
+
+                > li {
+                    background-color: transparent;
+
+                    @include background-image(none);
+
+                    > a {
+                        background: #45CBF5;
+                        line-height: inherit;
+                        padding: 6px 8px;
+
+                        @include respond-to(phone, tablet) {
+                            background: transparent;
+                        }
+
+                        &:hover {
+                            background: #5BBAE8;
+                        }
+
+                        &.toggle-controls-link {
+                            background: #92F545;
+
+                            @include respond-to(phone, tablet) {
+                                background: transparent;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .page-customization-bar {
+                background-color: #6DA4E4;
+                background-color: rgba(109, 168, 228, 0.9);
+                line-height: 20px;
+
+                .btn:hover {
+                    background: transparent;
+                }
+            }
+
+            .page-customization-bar-text {
+                height: 43px;
+            }
+        }
+    }
+
+    /* ---------- Main navigation ---------- */
+
+    #navigation {
+        .add-page-editor {
+            input {
+                margin-top: 0;
+            }
+        }
+
+        .brand {
+            padding: 0;
+            padding-right: 20px;
+            margin-left: 0;
+
+            img {
+                height: 40px;
+                width: auto;
+            }
+        }
+
+        .nav {
+            li {
+                &.dropdown {
+                    > .dropdown-toggle {
+                        .caret {
+                            border-bottom-color: #FFF;
+                            border-top-color: #FFF;
+                        }
+                    }
+                }
+
+                &.open {
+                    > a {
+                        background-color: #A3A3A3;
+                        color: \$gray-inactive;
+                    }
+                }
+
+                &.active > a {
+                    background-color: \$dockbarGradientStart;
+                }
+            }
+
+            > li > a {
+                padding: 4px 70px 5px;
+            }
+
+            .dropdown-menu {
+                background: #00ACFF;
+                border-width: 0;
+                margin: 0;
+
+                &:after, &:before {
+                    border-width: 0;
+                }
+
+                a {
+                    color: #FFF;
+
+                    &:hover {
+                        background: none;
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+
+        .navbar-inner {
+            background: \$gray-light;
+            border-width: 0;
+            height: 59px;
+
+            li {
+                line-height: 50px;
+                    a {
+                        color: \$gray;
+                        background: none \$gray-light;
+                        border-right: 1px solid \$gray-medium;
+                }
+            }
+            li.active > a {
+                background-color: #fff;
+                background-image: none;
+            }
+        }
+    }
+    .navbar-inner {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .modify-pages .delete-tab {
+        background: #555;
+        border: 2px solid #FFF;
+        color: #FFF;
+        font-size: 16px;
+        padding: 4px;
+        right: -10px;
+        top: 0;
+        z-index: 300;
+    }
+
+    /* ---------- Breadcrumbs ---------- */
+
+    .breadcrumb {
+        background-color: #FAFAFA;
+    }
+
+    #breadcrumbs {
+        margin-bottom: 45px;
+
+        .breadcrumb {
+            margin-bottom: 0;
+        }
+    }
+
+    /* ---------- Portlet wrapper and icons ---------- */
+
+    .portlet-content, .portlet-minimized .portlet-content-container {
+        border: 1px solid #EAEAEA;
+        border-top-width: 0;
+        padding: 12px 10px 10px;
+    }
+
+    .portlet-topper {
+        background: #D3D3D3;
+        color: #FFF;
+        padding: 0;
+
+        .portlet-title {
+            font-size: 1em;
+            font-weight: normal;
+            line-height: 2.2;
+            margin: 0;
+
+            i, span img {
+                display: none;
+            }
+        }
+
+        .portlet-topper-toolbar {
+            font-size: 0.8em;
+            margin: -10px 0 0;
+            padding: 0;
+            right: 10px;
+            top: 50%;
+        }
+    }
+
+    .lfr-configurator-visibility .portlet-topper {
+        background-color: #A9A9A9;
+    }
+
+    .portlet-borderless-bar .portlet-options {
+        .dropdown-toggle {
+            background-image: url(../images/portlet/options_borderless.png);
+        }
+    }
+
+    .signed-in.controls-visible .portlet-title {
+        padding-right: 80px;
+    }
+
+    .portlet-asset-publisher .asset-content, .portlet-asset-publisher .asset-summary, .portlet-asset-publisher .asset-title, .portlet-asset-publisher .header-title, .portlet-asset-publisher li.title-list, .portlet-blogs .entry-body, .portlet-blogs .entry-title, .portlet-blogs .header-title, .portlet-journal-content .journal-content-article, .portlet-message-boards .header-title, .portlet-message-boards .thread-body {
+        @include hyphenation;
+    }
+
+    .portlet-icons {
+        float: none;
+    }
+
+    .page-maximized .portlet-icons {
+        font-size: 11px;
+    }
+
+    .dropdown-menu > li.portlet-close > a {
+        color: #C00;
+        font-weight: bold;
+
+        &:focus, &:hover {
+            background-color: #C00;
+            background-image: none;
+            color: #FFF;
+        }
+    }
+
+    /* ---------- Set password reminder portlet ---------- */
+
+    .update-reminder-query {
+        .control-group {
+            max-width: 350px;
+        }
+
+        .reminder-query-answer {
+            height: 30px;
+            width: 100%;
+        }
+
+        .reminder-query-question {
+            width: 100%;
+        }
+    }
+
+    /* ---------- Staging bar ---------- */
+
+    .navbar-inner .nav.staging-bar {
+        border-top-width: 0;
+        position: static;
+
+        li {
+            .page-variations {
+                display: inline-block;
+                margin-left: 8px;
+
+                a {
+                    text-decoration: none;
+                }
+            }
+        }
+
+        li.dropdown {
+            position: static;
+        }
+    }
+
+    /* ---------- Footer ---------- */
+
+    #footer {
+        text-align: right;
+        background-color: \$gray-softlight;
+        height: 100px;
+        padding: 20px 5%;
+    }
+
+    /* ---------- Hudcrumbs ---------- */
+
+    .lfr-hudcrumbs {
+        position: fixed;
+        top: 0;
+        z-index: 300;
+
+        .breadcrumb {
+            background: #414445;
+            background: rgba(0, 0, 0, 0.8);
+
+            li {
+                a, span {
+                    color: #FFF;
+                }
+            }
+        }
+    }
+
+    /* ---------- Misc. ---------- */
+
+    .lfr-panel-container {
+        background-color: transparent;
+    }
+
+    .lfr-portlet-title-editable-content .field {
+        display: inline;
+        float: none;
+    }
+
+    .portlet-journal-content .lfr-icon-actions {
+        margin-bottom: 3px;
+    }
+    
+    /* ---------- Extras ---------- */
+
+    #navigation {
+        .nav {
+            li {
+                &.open {
+                    > a {
+                        @include box-shadow(none);
+                    }
+                }
+            }
+
+            .dropdown-menu {
+                @include border-radius(0);
+            }
+
+            > .active > a {
+                @include background-image(linear-gradient(\$dockbarGradientStart 0%, \$dockbarGradientStart 47%, \$dockbarGradientEnd 100%));
+                @include box-shadow(none);
+                @include filter-gradient(\$dockbarGradientStart, \$dockbarGradientEnd, vertical);
+            }
+        }
+
+        .navbar-inner {
+            @include border-radius(0);
+            @include box-shadow(none);
+
+            li a {
+                @include text-shadow(none);
+            }
+        }
+    }
+
+    .update-reminder-query .reminder-query-answer {
+        @include box-sizing(border-box);
+    }
+
+    .modify-pages .delete-tab {
+        @include border-radius(50%);
+        @include text-shadow(none);
+        @include transition(opacity 0.3s ease);
+
+        &:hover {
+            @include box-shadow(0 1px 1px -1px #000);
+        }
+    }
+
+    %portlet-action-bar-custom {
+        @include border-radius(20px);
+        @include box-shadow(inset 0 1px 3px #000);
+    }
+    .portlet, .portlet-borderless-container {
+        background: none repeat scroll 0 0 #FFF;
+    }   
+    .portlet-borderless-bar {
+        @extend %portlet-action-bar-custom;
+    }
+
+    .portlet-content, .portlet-minimized .portlet-content-container {
+        @include border-radius(0);
+        padding: 15px 25px;
+    }
+
+    .portlet-content {
+        .lfr-icon-actions {
+            @extend %portlet-action-bar-custom;
+        }
+    }
+
+    .portlet-minimized {
+        .portlet-content {
+            border-width: 0;
+        }
+
+        .portlet-topper {
+            @include border-radius(0);
+            background: none repeat scroll 0 0 #FFF;
+            color: \$green;
+            font-family: "Oxygen", Arial, sans-serif; font-weight: 400;
+            font-size: 24px;
+            padding: 5px 15px;
+        }
+    }
+
+    .portlet-nested-portlets .portlet-body {
+        .portlet, .portlet-borderless-container {
+            @include box-shadow(none);
+        }
+    }
+
+    .portlet-topper {
+        @include border-radius(0);
+        background: none repeat scroll 0 0 #FFF;
+        color: \$green;
+        font-family: "Oxygen", Arial, sans-serif; font-weight: 400;
+        font-size: 24px;
+        padding: 5px 15px;
+    }
+    .lfr-configurator-visibility .portlet-topper {
+        background-color: #FFFFFF;
+    }
+    .portlet-login .navigation {
+        clear: both;
+        width: 94%;
+        background-color: #FFF;
+        border-top: none;
+        padding: 3%;
+    }
+    .portlet-login .navigation ul {
+        margin: 0;
+    }
+    .portlet-login .navigation li {
+        float: right;
+        margin: 0 0 0 1.5em;
+        background-color: \$green;
+        text-align: center;
+        height: 40px;
+        width: 200px;
+    }
+    .portlet-login .navigation li a {
+        color: #fff;
+        line-height: 40px;
+    }
+    .portlet-login .navigation li a img {
+        display: none;
+    }
+    .portlet-login .navigation li a:hover, .portlet-login .navigation li a:focus {
+        text-decoration: none;
+    }
+    .portlet-login .loginTitle, .portlet-login .socialNetworkLoginTitle {
+        margin-bottom: 10px;
+        color: \$gray-dark;
+    }
+    .portlet-login form, .portlet-login .socialNetworkLogin {
+        width: 41%;
+        padding: 3%;
+        background-color: #FFF;
+        min-height: 300px;
+    }
+    .portlet-login form {
+        float: right;
+    }
+    .portlet-login form label {
+        color: \$gray-inactive;
+    }
+    .portlet-login input[type="password"], .portlet-login input[type="text"] {
+        width: 95%;
+    }
+    .portlet-login select {
+        width: 165px;
+    }
+    .portlet-login input[type="checkbox"] {
+        vertical-align: top;
+    }
+    .portlet-login .control-group {
+        margin-bottom: 10px;
+    }
+    .portlet-login button {
+        width: 100%;
+        padding: 10px 0;
+    }
+    .loginSquares {
+        width: 100%;
+    }
+    .loginSquares ul {
+        height: 200px;
+    }
+    .loginSquares li {
+        width: 50%;
+        line-height: 80px;
+        margin: 0 auto;
+    }
+    .loginSquares a {
+        text-align: center;
+        float: left;
+    }
+    .loginSquares li a {
+        float: none;
+    }
+    .loginSquares img {
+        margin: 20px auto;
+        display: block;
+    }
+    .dockbar-split .dockbar {
+        .navbar-inner {
+            @include box-shadow(none);
+            @include text-shadow(none);
+
+            @include respond-to(phone, tablet) {
+                @include background-image(linear-gradient(\$dockbarGradientStart, \$dockbarGradientEnd));
+            }
+
+            .nav {
+                li.dropdown.open {
+                    > .dropdown-toggle {
+                        background-color: \$dockbarOpenGradientStart;
+
+                        @include background-image(linear-gradient(\$dockbarOpenGradientStart, \$dockbarOpenGradientEnd));
+                        @include box-shadow(none);
+                    }
+
+                    > .staging-link.dropdown-toggle {
+                        @include background-image(linear-gradient(#0279E1, #0264CC));
+                    }
+                }
+            }
+        }
+    }
+
+    .lfr-hudcrumbs {
+        ul {
+            @include border-top-left-radius(0);
+            @include border-top-right-radius(0);
+        }
+
+        .breadcrumb li {
+            a, span {
+                @include text-shadow(-1px -1px #000);
+            }
+        }
+    }
+    .frontpage-tagline {
+        color: #FFF;
+        word-break:normal;
+    }
+    .frontpage-tagline h2 {
+        font-size: 24px;
+        line-height: 32px;
+    }
+    .green-block {
+        background-color: \$green;
+        padding: 3px 5px;
+        line-height: 28px;
+    }
+    .tagline {
+        font-style: italic;
+        font-size: 18px;
+    }
+    .photo-background {
+        background: url(../images/big-background.png) no-repeat scroll 50% 50% / 100% 100% rgba(0, 0, 0, 0);
+        margin: 0 -13%;
+        padding: 2% 13%;
+    }
+    .non-background .portlet-borderless-container, .non-background .portlet {
+        background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    }
+    .transparency-background .portlet-content {
+        background: url(../images/transparency.png) repeat 0 0 transparent;
+    }
+    .alert-info, .portlet-msg-help, .portlet-msg-info, .portlet-msg-progress {
+        background-color: \$green-soft;
+        border-color: \$green;
+        color: \$green;
+    }
+    /* ---------- IE8 ---------- */
+
+    &.ie8 {
+        .dockbar-split .dockbar .navbar-inner .info-button a {
+            margin-top: -2px;
+        }
+    }
+    /* --------- FORMS --------- */
+    .control-group.success input, .control-group.success select, .control-group.success textarea {
+        border-color: \$green;
+    }
+    input[type="color"], input[type="date"], input[type="datetime"],
+    input[type="datetime-local"], input[type="email"], input[type="month"], 
+    input[type="number"], input[type="password"], input[type="search"], 
+    input[type="tel"], input[type="text"], input[type="time"], input[type="url"],
+    input[type="week"], select, textarea, .uneditable-input {
+        border: 1px solid \$gray-inactive;
+        color: \$gray-inactive;
+        font-family: "Oxygen", Arial, sans-serif; 
+        font-weight: 400;
+    }
+    input[type="color"]:focus, input[type="date"]:focus, 
+    input[type="datetime"]:focus, input[type="datetime-local"]:focus, 
+    input[type="email"]:focus, input[type="month"]:focus, input[type="number"]:focus, 
+    input[type="password"]:focus, input[type="search"]:focus, input[type="tel"]:focus, 
+    input[type="text"]:focus, input[type="time"]:focus, input[type="url"]:focus, 
+    input[type="week"]:focus, select:focus, textarea:focus, .uneditable-input:focus {
+        box-shadow: 0 1px 1px \$green-soft inset, 0 0 8px \$green-soft;
+        border-color: \$green;
+    }    
+    input, button, select, textarea {
+        font-family: "Ubuntu", Arial, sans-serif; 
+        font-weight: 400;
+    }
+    input, textarea, .uneditable-input {
+        width: 80%;
+    }
+    button, .btn, .btn-primary {
+        background-color: \$green;
+        background-image: none;
+        border-color: none;
+        border-image: none;
+        border-radius: 0;
+        border-width: 0px;
+        box-shadow: none;
+        color: #fff;
+        text-shadow: none;
+        padding: 4px 11px;
+    }
+    button, .btn:hover, .btn:focus, .btn:active, .btn.active, .btn-primary:hover, 
+    .btn-primary:focus, .btn-primary:active, .btn-primary.active, .btn-primary.disabled, .btn-primary[disabled]{
+        background-color: \$green-dark;
+    }
+    .control-group.success .control-label,
+    .control-group.success .help-block, .control-group.success .help-inline {
+        color: \$green-dark;
+    }
+    
+}

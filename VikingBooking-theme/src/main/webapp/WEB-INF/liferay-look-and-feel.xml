@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE look-and-feel PUBLIC "-//Liferay//DTD Look and Feel 6.2.0//EN"
+        "http://www.liferay.com/dtd/liferay-look-and-feel_6_2_0.dtd">
+
+<look-and-feel>
+    <compatibility>
+        <version>6.2.0+</version>
+    </compatibility>
+    <company-limit>
+        <company-includes />
+        <company-excludes />
+    </company-limit>
+     <theme id="spottkick-theme" name="Spottkick">
+         <template-extension>ftl</template-extension>
+         <settings>
+             <setting configurable="true" key="show-navigation" value="true" type="checkbox"/>
+         </settings>
+         <roles>
+             <role-name>User</role-name>
+         </roles>
+    </theme>
+</look-and-feel>

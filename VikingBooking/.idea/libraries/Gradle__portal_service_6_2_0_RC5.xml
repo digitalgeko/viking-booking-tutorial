@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: portal-service-6.2.0-RC5">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.liferay.portal/portal-service/6.2.0-RC5/87e33ed5bd255ba83caf46fc6811e321d9491fcb/portal-service-6.2.0-RC5.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.liferay.portal/portal-service/6.2.0-RC5/14bd067cfe9c322a83d09c4b25f5da209995716d/portal-service-6.2.0-RC5-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

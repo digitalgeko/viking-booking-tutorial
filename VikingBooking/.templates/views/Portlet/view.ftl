@@ -1,0 +1,1 @@
+<h1>This is ${portletName} view mode.</h1>

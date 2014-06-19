@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE routes PUBLIC "-//Liferay//DTD Friendly URL Routes 6.1.0//EN"
+        "http://www.liferay.com/dtd/liferay-friendly-url-routes_6_1_0.dtd">
+
+<% def vkCtrlPath = 'viking' + File.separator + 'controllers' + File.separator %>
+<% portletFullName = portletClassName - vkCtrlPath %>
+<% portletName = portletFullName - "Portlet" %>
+
+<routes>
+    <route><% resourceParams = conf[portletName]?.resourceUrlParams ? conf[portletName]?.resourceUrlParams?.toString().split(",") : [] %>
+        <pattern>/resource/{VIKING_action}<% if (resourceParams.size() > 0) { resourceParams.each { param -> %>/{${param}}<% } } %></pattern>
+        <generated-parameter name="VIKING_controller">controllers.${portletFullName}</generated-parameter>
+        <implicit-parameter name="p_p_lifecycle">2</implicit-parameter>
+        <implicit-parameter name="p_p_state">normal</implicit-parameter>
+    </route>
+    <route><% actionParams = conf[portletName]?.actionUrlParams ? conf[portletName]?.actionUrlParams?.toString().split(",") : [] %>
+        <pattern>/action/{VIKING_action}<% if (actionParams.size() > 0) { actionParams.each { param -> %>/{${param}}<% } } %></pattern>
+        <generated-parameter name="VIKING_controller">controllers.${portletFullName}</generated-parameter>
+        <implicit-parameter name="p_p_lifecycle">1</implicit-parameter>
+        <implicit-parameter name="p_p_state">normal</implicit-parameter>
+    </route>
+    <route>
+        <% renderParams = conf[portletName]?.renderUrlParams ? conf[portletName]?.renderUrlParams?.toString().split(",") : [] %>
+        <pattern>/render/{VIKING_action}<% if (renderParams.size() > 0) { renderParams.each { param -> %>/{${param}}<% } } %></pattern>
+        <generated-parameter name="VIKING_controller">controllers.${portletFullName}</generated-parameter>
+        <implicit-parameter name="p_p_lifecycle">0</implicit-parameter>
+        <implicit-parameter name="p_p_state">normal</implicit-parameter>
+    </route>
+</routes>
