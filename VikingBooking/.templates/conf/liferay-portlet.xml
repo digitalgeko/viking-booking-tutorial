@@ -22,9 +22,17 @@
             <instanceable>${portletConf.instanceable?:false}</instanceable>
             <header-portlet-css>/css/main.css</header-portlet-css>
             <header-portlet-css>/css/datepicker.css</header-portlet-css>
+            <header-portlet-css>/css/fullcalendar.css</header-portlet-css>
+            <header-portlet-css>/css/darktooltip.min.css</header-portlet-css>
             <header-portlet-javascript>/js/jquery-1.10.2.min.js</header-portlet-javascript>
-
+            <header-portlet-javascript>/jquery-ui/ui/jquery-ui.js</header-portlet-javascript>
+            
             <footer-portlet-javascript>/js/angular/angular.min.js</footer-portlet-javascript>
+            <footer-portlet-javascript>/js/angular/ui-bootstrap-0.8.0.min.js</footer-portlet-javascript>
+            <footer-portlet-javascript>/js/angular/ui-bootstrap-tpls-0.8.0.min.js</footer-portlet-javascript>
+            <footer-portlet-javascript>/js/angular/fullcalendar.min.js</footer-portlet-javascript>
+            <footer-portlet-javascript>/js/angular/gcal.js</footer-portlet-javascript>
+            <footer-portlet-javascript>/js/angular/calendar.js</footer-portlet-javascript>
             <footer-portlet-javascript>/js/angular/checklist-model.js</footer-portlet-javascript>
             <footer-portlet-javascript>/js/angular/init.js</footer-portlet-javascript>
 

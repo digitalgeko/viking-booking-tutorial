@@ -3,7 +3,10 @@ package controllers
 import com.liferay.portal.kernel.cal.TZSRecurrence
 import com.liferay.portal.kernel.util.CalendarUtil
 import com.liferay.portal.kernel.util.StringPool
+import com.liferay.portal.model.User
+import com.liferay.portal.service.UserLocalServiceUtil
 import com.liferay.portlet.calendar.service.CalEventLocalServiceUtil
+import models.Event
 import models.UserAvailability
 import nl.viking.controllers.Controller
 import nl.viking.controllers.annotation.*
@@ -24,32 +27,14 @@ class ScheduleAppointmentPortlet extends Controller {
 
 	@Resource(mode="view")
 	def saveAppointment() {
-		def formParams = binder.fromJsonBody(Map.class)
+		Event event = binder.fromJsonBody(Event.class)
+		validator.validate("event", event)
+		if (validator.hasErrors()) {
+			return renderJSON([success:false, errors: validator.errors])
+		}
 
-		h.serviceContext.scopeGroupId = formParams.userId;
-		CalendarUtil.
-		CalEventLocalServiceUtil.addEvent(
-				formParams.userId,
-				"Appointment",
-				StringPool.BLANK,
-				StringPool.BLANK,
-				formParams.startMonth,
-				formParams.startDay,
-				formParams.startYear,
-				formParams.startHour,
-				0,
-				1,
-				0,
-				false,
-				true,
-				"appointment",
-				false,
-				new TZSRecurrence(),
-				0,
-				0,
-				0,
-				h.serviceContext
-		)
+		event.save()
+
 		renderJSON([success:true])
 	}
 

@@ -3,7 +3,6 @@
 	var getAvailabilityAction = ${jsRoute("VikingBookingPortlet.getAvailability")}
 </script>
 <div ng-controller="AvailabilityController">
-	
 	<div class="well">
 		<p>
 			Share this URL: <a href="${appointmentsURL}">${appointmentsURL}</a>
@@ -12,9 +11,8 @@
 	
 
 	<button ng-click="status.setAvailability = !status.setAvailability">Set availability</button>
-	
 	<div ng-show="status.setAvailability">
-		<button ng-click="saveAvailability()">Save</button>
+		<button ng-click="saveAvailability()">${h.messages.get("save")}</button>
 		<table class="table">
 			<thead>
 				<tr>

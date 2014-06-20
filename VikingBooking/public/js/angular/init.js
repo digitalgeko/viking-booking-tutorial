@@ -1,6 +1,8 @@
 VikingBookingApp = angular.module('VikingBookingApp', 
 	[
-		"checklist-model"
+		"checklist-model",
+		"ui.bootstrap",
+		"ui.calendar"
 	]
 );
 

@@ -1,7 +1,7 @@
 VikingBookingApp.controller('ScheduleAppointmentController', ['$scope', '$http', function($scope, $http) {
 
 	$scope.formatHour = function(hour) {
-		return moment(hour, "H").format("HH:mm")
+		return moment(hour, "H").format("hh:mm a")
 	};
 
 	$scope.init = function(userId) {
@@ -16,11 +16,7 @@ VikingBookingApp.controller('ScheduleAppointmentController', ['$scope', '$http',
 			}).on('changeDate', function(e) {
 				var dateMoment = moment(e.date)
 				$scope.currentWeekDay = dateMoment.day();
-				
-				$scope.newAppointment.startMonth = dateMoment.month();
-				$scope.newAppointment.startDay = dateMoment.date();
-				$scope.newAppointment.startYear = dateMoment.year();
-				$scope.newAppointment.startHour = dateMoment.hour();
+				$scope.calendarDateTimestamp = e.date.getTime();
 				$scope.$apply();
 			});
 		});
@@ -28,14 +24,19 @@ VikingBookingApp.controller('ScheduleAppointmentController', ['$scope', '$http',
 	
 	$scope.newAppointment = {
 		hour: -1
-	}
+	};
+
 	$scope.saveAppointment = function() {
 		$scope.newAppointment.userId = $scope.userId;
+		var dateMoment = moment($scope.calendarDateTimestamp).hours($scope.newAppointment.hour);
+		
+		$scope.newAppointment.dateTimestamp = new Date(dateMoment).getTime();
 		$http.post(saveAppointmentAction({userId: $scope.userId}), $scope.newAppointment).success(function(data) {
-			$scope.newAppointment = {
-				hour: -1
-			};
-			$scope.currentWeekDay = null;
+			console.log(data);
+			// $scope.newAppointment = {
+			// 	hour: -1
+			// };
+			// $scope.currentWeekDay = null;
 		});
 	};
 }]);

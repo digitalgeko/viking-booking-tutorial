@@ -1,12 +1,12 @@
 VikingBookingApp.controller('AvailabilityController', ['$scope', '$http', function($scope, $http) {
 	$scope.weekDays = [
+		{index:0, label: "sunday"},
 		{index:1, label: "monday"},
 		{index:2, label: "tuesday"},
 		{index:3, label: "wednesday"},
 		{index:4, label: "thursday"},
 		{index:5, label: "friday"},
-		{index:6, label: "saturday"},
-		{index:0, label: "sunday"}
+		{index:6, label: "saturday"}
 	];
 	
 	$scope.hours = []
@@ -16,7 +16,8 @@ VikingBookingApp.controller('AvailabilityController', ['$scope', '$http', functi
 	};
 
 	$scope.formatHour = function(hour) {
-		return moment(hour, "H").format("HH:mm")
+		if (hour == 24) hour = 0;
+		return moment(hour, "H").format("hh:mm a")
 	};
 
 	$http.get(getAvailabilityAction()).success(function(data) {
