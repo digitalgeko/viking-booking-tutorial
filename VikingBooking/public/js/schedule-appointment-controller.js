@@ -16,27 +16,30 @@ VikingBookingApp.controller('ScheduleAppointmentController', ['$scope', '$http',
 			}).on('changeDate', function(e) {
 				var dateMoment = moment(e.date)
 				$scope.currentWeekDay = dateMoment.day();
-				$scope.calendarDateTimestamp = e.date.getTime();
+				$scope.calendarDate.timestamp = e.date.getTime();
 				$scope.$apply();
 			});
 		});
 	};
 	
-	$scope.newAppointment = {
-		hour: -1
-	};
+	$scope.calendarDate = {};
+	$scope.newAppointment = {};
 
 	$scope.saveAppointment = function() {
 		$scope.newAppointment.userId = $scope.userId;
-		var dateMoment = moment($scope.calendarDateTimestamp).hours($scope.newAppointment.hour);
+		var dateMoment = moment($scope.calendarDate.timestamp).hours($scope.calendarDate.hour);
 		
 		$scope.newAppointment.dateTimestamp = new Date(dateMoment).getTime();
 		$http.post(saveAppointmentAction({userId: $scope.userId}), $scope.newAppointment).success(function(data) {
-			console.log(data);
-			// $scope.newAppointment = {
-			// 	hour: -1
-			// };
-			// $scope.currentWeekDay = null;
+			if (data.success) {
+				$scope.newAppointment = {};
+				$scope.calendarDate.hour = undefined;
+				$scope.currentWeekDay = undefined;
+				$scope.showSuccessMessage = true;
+			} else {
+				$scope.errors = data.errors;
+				console.log(data);
+			}
 		});
 	};
 }]);

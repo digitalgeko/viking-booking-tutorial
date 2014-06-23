@@ -32,4 +32,8 @@ VikingBookingApp.controller('AvailabilityController', ['$scope', '$http', functi
 			$scope.status.setAvailability = false;
 		});
 	};
+
+	$scope.messages = function(key) {
+		return i18n(key)
+	};
 }]);
