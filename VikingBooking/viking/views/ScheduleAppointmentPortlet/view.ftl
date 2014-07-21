@@ -7,7 +7,7 @@
 	<h3>${h.messages.get("select-the-date-for-your-appointment")}</h3>
 	<div id="calendar"></div>
 
-	<div ng-show="currentWeekDay">
+	<div ng-show="currentWeekDay != undefined">
 		<h3>${h.messages.get("select-the-time")}</h3>
 		<button 
 			ng-repeat="hour in availableHours[currentWeekDay]" 

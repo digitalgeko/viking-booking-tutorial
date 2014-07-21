@@ -1,9 +1,9 @@
 package models
 
-import com.google.code.morphia.annotations.Entity
-import nl.viking.model.morphia.Model
+import nl.viking.model.hibernate.Model
 import org.hibernate.validator.constraints.Email
 
+import javax.persistence.Entity
 import javax.validation.constraints.NotNull
 
 /**
@@ -12,11 +12,11 @@ import javax.validation.constraints.NotNull
  * Time: 12:31 PM
  */
 @Entity
-class Event extends Model {
+class EventHibernate extends Model {
 
-	long userId
+	Long userId
 
-	long dateTimestamp
+	Long dateTimestamp
 
 	@NotNull
 	String name

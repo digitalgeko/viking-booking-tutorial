@@ -1,8 +1,8 @@
 package controllers
 
-import com.liferay.portal.kernel.dao.orm.QueryUtil
-import com.liferay.portlet.calendar.service.CalEventLocalServiceUtil
-import models.Event
+import models.EventHibernate
+import models.EventMongo
+import nl.viking.Conf
 import nl.viking.controllers.Controller
 import nl.viking.controllers.annotation.*
 
@@ -20,7 +20,14 @@ class CalendarPortlet extends Controller {
 
     @Resource(mode="view")
     def getEvents() {
-    	def events = Event.findAll()
+    	def events
+
+		if (Conf.properties.persistance.database == 'mongo'){
+			events = EventMongo.findAll()
+		} else {
+			events = EventHibernate.findAll()
+		}
+
 		renderJSON(events)
     }
 

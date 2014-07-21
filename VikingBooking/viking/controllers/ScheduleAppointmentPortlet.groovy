@@ -1,13 +1,10 @@
 package controllers
 
-import com.liferay.portal.kernel.cal.TZSRecurrence
-import com.liferay.portal.kernel.util.CalendarUtil
-import com.liferay.portal.kernel.util.StringPool
-import com.liferay.portal.model.User
-import com.liferay.portal.service.UserLocalServiceUtil
-import com.liferay.portlet.calendar.service.CalEventLocalServiceUtil
-import models.Event
-import models.UserAvailability
+import models.EventHibernate
+import models.EventMongo
+import models.UserAvailabilityHibernate
+import models.UserAvailabilityMongo
+import nl.viking.Conf
 import nl.viking.controllers.Controller
 import nl.viking.controllers.annotation.*
 
@@ -21,20 +18,35 @@ class ScheduleAppointmentPortlet extends Controller {
 
 	@Resource(mode="view")
 	def getUserAvailability() {
-		def userAvailability = UserAvailability.forUserId(bindLong("userId"))
+		def userId = bindLong("userId")
+
+		def userAvailability
+
+		println Conf.properties.persistance.database
+		if (Conf.properties.persistance.database == 'mongo'){
+			userAvailability = UserAvailabilityMongo.forUserId(userId)
+		} else {
+			userAvailability = UserAvailabilityHibernate.forUserId(userId)
+		}
+
 		renderJSON(userAvailability)
 	}
 
 	@Resource(mode="view")
 	def saveAppointment() {
-		Event event = binder.fromJsonBody(Event.class)
+		def event
+
+		if (Conf.properties.persistance.database == 'mongo'){
+			event = binder.fromJsonBody(EventMongo.class)
+		} else {
+			event = binder.fromJsonBody(EventHibernate.class)
+		}
 		validator.validate("event", event)
 		if (validator.hasErrors()) {
 			return renderJSON([success:false, errors: validator.errors])
 		}
 
 		event.save()
-
 		renderJSON([success:true])
 	}
 

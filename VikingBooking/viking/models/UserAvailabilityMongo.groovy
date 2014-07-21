@@ -1,7 +1,6 @@
 package models
 
 import com.google.code.morphia.annotations.Entity
-import com.liferay.portal.model.User
 import nl.viking.model.morphia.Model
 
 /**
@@ -10,13 +9,13 @@ import nl.viking.model.morphia.Model
  * Time: 11:31 AM
  */
 @Entity
-class UserAvailability extends Model {
+class UserAvailabilityMongo extends Model {
 
 	Long userId
 
 	Map availableHours
 
-	static UserAvailability forUserId(long userId) {
-		find("userId", userId).get() ?: new UserAvailability(userId: userId)
+	static UserAvailabilityMongo forUserId(long userId) {
+		find("userId", userId).get() ?: new UserAvailabilityMongo(userId: userId)
 	}
 }
