@@ -1,3 +1,5 @@
+apply plugin: 'viking'
+
 buildscript {
     repositories {
     	mavenCentral()
@@ -8,9 +10,16 @@ buildscript {
     }
 }
 
-project.ext.set("liferayVersion", "6.2.0-RC5")
+repositories {
+	mavenLocal()
+}
 
-apply plugin: 'viking'
+dependencies {
+	compile "org.vikingportlets:viking-framework:0.2.26"
+}
+
+
+project.ext.set("liferayVersion", "6.2.0-RC5")
 
 sourceCompatibility = '1.6'
 targetCompatibility = '1.6'

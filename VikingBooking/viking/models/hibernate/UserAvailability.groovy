@@ -1,15 +1,13 @@
-package models
+package models.hibernate
 
 import org.codehaus.jackson.annotate.JsonIgnore
 import org.hibernate.Criteria
 import org.hibernate.criterion.Restrictions
 
-import javax.persistence.Column
 import javax.persistence.ElementCollection
 import javax.persistence.Entity
 import nl.viking.model.hibernate.Model
 
-import javax.persistence.MapKey
 import javax.persistence.Transient
 
 /**
@@ -18,7 +16,7 @@ import javax.persistence.Transient
  * Time: 11:31 AM
  */
 @Entity
-class UserAvailabilityHibernate extends Model {
+class UserAvailability extends Model {
 
 	Long userId
 
@@ -35,12 +33,12 @@ class UserAvailabilityHibernate extends Model {
 		[:]
 	}
 
-	static UserAvailabilityHibernate forUserId(long userId) {
-		def storedUserAvailability = UserAvailabilityHibernate.query { Criteria criteria ->
+	static UserAvailability forUserId(long userId) {
+		def storedUserAvailability = UserAvailability.query { Criteria criteria ->
 			criteria.add(Restrictions.eq("userId", userId))
 			criteria.uniqueResult()
 		}
 
-		storedUserAvailability ?: new UserAvailabilityHibernate(userId: userId)
+		storedUserAvailability ?: new UserAvailability(userId: userId)
 	}
 }

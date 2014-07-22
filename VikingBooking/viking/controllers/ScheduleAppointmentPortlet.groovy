@@ -1,9 +1,7 @@
 package controllers
 
-import models.EventHibernate
-import models.EventMongo
-import models.UserAvailabilityHibernate
-import models.UserAvailabilityMongo
+import models.morphia.Event
+import models.morphia.UserAvailability
 import nl.viking.Conf
 import nl.viking.controllers.Controller
 import nl.viking.controllers.annotation.*
@@ -24,9 +22,9 @@ class ScheduleAppointmentPortlet extends Controller {
 
 		println Conf.properties.persistance.database
 		if (Conf.properties.persistance.database == 'mongo'){
-			userAvailability = UserAvailabilityMongo.forUserId(userId)
+			userAvailability = UserAvailability.forUserId(userId)
 		} else {
-			userAvailability = UserAvailabilityHibernate.forUserId(userId)
+			userAvailability = models.hibernate.UserAvailability.forUserId(userId)
 		}
 
 		renderJSON(userAvailability)
@@ -37,9 +35,9 @@ class ScheduleAppointmentPortlet extends Controller {
 		def event
 
 		if (Conf.properties.persistance.database == 'mongo'){
-			event = binder.fromJsonBody(EventMongo.class)
+			event = binder.fromJsonBody(Event.class)
 		} else {
-			event = binder.fromJsonBody(EventHibernate.class)
+			event = binder.fromJsonBody(models.hibernate.Event.class)
 		}
 		validator.validate("event", event)
 		if (validator.hasErrors()) {

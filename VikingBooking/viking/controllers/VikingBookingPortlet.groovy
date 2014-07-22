@@ -1,9 +1,8 @@
 package controllers
 
 import com.liferay.portal.util.PortalUtil
-import models.HoursList
-import models.UserAvailabilityHibernate
-import models.UserAvailabilityMongo
+import models.hibernate.HoursList
+import models.morphia.UserAvailability
 import nl.viking.Conf
 import nl.viking.controllers.Controller
 import nl.viking.controllers.annotation.*
@@ -20,9 +19,9 @@ class VikingBookingPortlet extends Controller {
 	def getAvailability() {
 		def userAvailability
 		if (Conf.properties.persistance.database == 'mongo'){
-			userAvailability = UserAvailabilityMongo.forUserId(h.user.userId)
+			userAvailability = UserAvailability.forUserId(h.user.userId)
 		} else {
-			userAvailability = UserAvailabilityHibernate.forUserId(h.user.userId)
+			userAvailability = models.hibernate.UserAvailability.forUserId(h.user.userId)
 		}
 		renderJSON(userAvailability)
 	}
@@ -33,10 +32,10 @@ class VikingBookingPortlet extends Controller {
 		def userAvailability
 
 		if (Conf.properties.persistance.database == 'mongo'){
-			userAvailability = UserAvailabilityMongo.forUserId(h.user.userId)
+			userAvailability = UserAvailability.forUserId(h.user.userId)
 			userAvailability.availableHours = availableHours
 		} else {
-			userAvailability = UserAvailabilityHibernate.forUserId(h.user.userId)
+			userAvailability = models.hibernate.UserAvailability.forUserId(h.user.userId)
 			userAvailability.availableHoursAux = availableHours.collectEntries {
 				def hoursList = userAvailability.availableHoursAux?.get(it.key)
 				if (hoursList == null) {

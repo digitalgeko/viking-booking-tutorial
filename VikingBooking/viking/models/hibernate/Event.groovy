@@ -1,9 +1,9 @@
-package models
+package models.hibernate
 
-import com.google.code.morphia.annotations.Entity
-import nl.viking.model.morphia.Model
+import nl.viking.model.hibernate.Model
 import org.hibernate.validator.constraints.Email
 
+import javax.persistence.Entity
 import javax.validation.constraints.NotNull
 
 /**
@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull
  * Time: 12:31 PM
  */
 @Entity
-class EventMongo extends Model {
+class Event extends Model {
 
 	Long userId
 

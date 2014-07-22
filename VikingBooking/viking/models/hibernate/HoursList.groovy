@@ -1,4 +1,4 @@
-package models
+package models.hibernate
 
 import nl.viking.model.hibernate.Model
 

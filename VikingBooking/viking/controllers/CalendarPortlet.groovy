@@ -1,7 +1,6 @@
 package controllers
 
-import models.EventHibernate
-import models.EventMongo
+import models.morphia.Event
 import nl.viking.Conf
 import nl.viking.controllers.Controller
 import nl.viking.controllers.annotation.*
@@ -23,9 +22,9 @@ class CalendarPortlet extends Controller {
     	def events
 
 		if (Conf.properties.persistance.database == 'mongo'){
-			events = EventMongo.findAll()
+			events = Event.findAll()
 		} else {
-			events = EventHibernate.findAll()
+			events = models.hibernate.Event.findAll()
 		}
 
 		renderJSON(events)
