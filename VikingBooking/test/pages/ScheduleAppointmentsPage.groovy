@@ -27,5 +27,6 @@ class ScheduleAppointmentsPage extends Page{
 		saveButton { $("#save-appointment-button") }
 
 		successMessage { $("#appointment-success-message") }
+
 	}
 }

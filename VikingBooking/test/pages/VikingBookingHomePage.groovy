@@ -14,7 +14,9 @@ class VikingBookingHomePage extends Page{
 	static at = {
 		getPageUrl() == url
 	}
+
 	static content = {
+
 		setAvailabilityButton { $("#set-availability-button") }
 		saveButton { $("#save-availability-button") }
 		successMessage { $("#availability-success-message") }
