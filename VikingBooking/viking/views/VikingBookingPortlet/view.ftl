@@ -6,14 +6,14 @@
 <div ng-controller="AvailabilityController">
 	<div class="well">
 		<p>
-			${h.messages.get("share-this-url")} <a href="${appointmentsURL}">${appointmentsURL}</a>
+			${h.messages.get("share-this-url")} <a href="${appointmentsURL}" id="appointments-link">${appointmentsURL}</a>
 		</p>
 	</div>
 	
 
-	<button ng-click="status.setAvailability = !status.setAvailability" ng-show="!status.setAvailability">${h.messages.get("set-availability")}</button>
+	<button id="set-availability-button" ng-click="showAvailabilityForm()" ng-show="!status.setAvailability">${h.messages.get("set-availability")}</button>
 	<div ng-show="status.setAvailability">
-		<button ng-click="saveAvailability()">${h.messages.get("save")}</button>
+		<button id="save-availability-button" ng-click="saveAvailability()">${h.messages.get("save")}</button>
 		<table class="table">
 			<thead>
 				<tr>
@@ -30,5 +30,9 @@
 				</tr>
 			</tbody>
 		</table>
+	</div>
+	
+	<div ng-show="status.showSuccessMessage">
+		<p class="alert alert-success" id="availability-success-message">Availability successfully saved!</p>
 	</div>
 </div>

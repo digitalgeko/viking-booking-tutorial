@@ -3,19 +3,28 @@ apply plugin: 'viking'
 buildscript {
     repositories {
     	mavenCentral()
+    	mavenLocal()
         maven { url "http://107.170.56.196:8081/artifactory/libs-release-local" }
     }
     dependencies {
-        classpath 'org.vikingportlets:viking-gradle-plugin:0.3.22'
+        classpath 'org.vikingportlets:viking-gradle-plugin:0.3.26'
     }
 }
 
 repositories {
 	mavenLocal()
+	mavenCentral()
 }
+
+def seleniumVersion = "2.39.0"
 
 dependencies {
 	compile "org.vikingportlets:viking-framework:0.2.26"
+
+	testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
+	testCompile "org.gebish:geb-spock:0.9.3"
+	testCompile "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
+	testCompile "org.seleniumhq.selenium:selenium-support:$seleniumVersion"
 }
 
 

@@ -1,4 +1,4 @@
-VikingBookingApp.controller('AvailabilityController', ['$scope', '$http', function($scope, $http) {
+VikingBookingApp.controller('AvailabilityController', ['$scope', '$http', '$timeout', function($scope, $http, $timeout) {
 	$scope.weekDays = [
 		{index:0, label: "sunday"},
 		{index:1, label: "monday"},
@@ -25,15 +25,24 @@ VikingBookingApp.controller('AvailabilityController', ['$scope', '$http', functi
 	});
 	
 	$scope.status = {
-		setAvailability: false
+		setAvailability: false,
+		showSuccessMessage: false
 	};
+
+	$scope.showAvailabilityForm = function() {
+		$scope.status.setAvailability = !status.setAvailability;
+		$scope.status.showSuccessMessage = false;
+	};
+
 	$scope.saveAvailability = function() {
 		$http.post(saveAvailabilityAction(), $scope.availableHours).success(function(data) {
 			$scope.status.setAvailability = false;
+			$scope.status.showSuccessMessage = true;
 		});
 	};
 
 	$scope.messages = function(key) {
 		return i18n(key)
 	};
+
 }]);
