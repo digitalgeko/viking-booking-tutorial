@@ -11,3 +11,5 @@ build
 .gradle
 *.iml
 dev.conf
+.gradletasknamecache
+
