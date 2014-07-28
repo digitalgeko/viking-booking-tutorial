@@ -20,7 +20,6 @@ class ScheduleAppointmentPortlet extends Controller {
 
 		def userAvailability
 
-		println Conf.properties.persistance.database
 		if (Conf.properties.persistance.database == 'mongo'){
 			userAvailability = UserAvailability.forUserId(userId)
 		} else {
