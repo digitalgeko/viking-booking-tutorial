@@ -27,6 +27,7 @@
             <header-portlet-javascript>/js/jquery-1.10.2.min.js</header-portlet-javascript>
             <header-portlet-javascript>/jquery-ui/ui/jquery-ui.js</header-portlet-javascript>
             
+            <header-portlet-javascript>/js/lib/viking.js</header-portlet-javascript>
             <footer-portlet-javascript>/js/angular/angular.min.js</footer-portlet-javascript>
             <footer-portlet-javascript>/js/angular/ui-bootstrap-0.8.0.min.js</footer-portlet-javascript>
             <footer-portlet-javascript>/js/angular/ui-bootstrap-tpls-0.8.0.min.js</footer-portlet-javascript>

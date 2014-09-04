@@ -1,7 +1,9 @@
 <script type="text/javascript">
-	var getEventsAction = ${jsRoute("CalendarPortlet.getEvents")}
+    VK.setPortletData("${h.portletId}", {
+        getEventsAction: ${jsRoute("CalendarPortlet.getEvents")}
+    });
 </script>
-<div ng-controller="CalendarController">
+<div ng-controller="CalendarController" ng-init="init('${h.portletId}')">
 	<div ui-calendar="uiConfig.calendar" ng-model="eventSources"></div>
 
 

@@ -1,5 +1,5 @@
 def build(b) {
-	b.site("Guest") {
+	b.site("VikingBooking") {
 		layout("Home") {
 			override true
 			layoutTemplateId "1_column"

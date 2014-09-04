@@ -1,9 +1,11 @@
 <script type="text/javascript">
-	var getAvailabilityAction = ${jsRoute("ScheduleAppointmentPortlet.getUserAvailability", ['userId'] )}
-	var saveAppointmentAction = ${jsRoute("ScheduleAppointmentPortlet.saveAppointment", ['userId'] )}
+	VK.setPortletData("${h.portletId}", {
+		getAvailabilityAction: ${jsRoute("ScheduleAppointmentPortlet.getUserAvailability", ['userId'] )},
+		saveAppointmentAction: ${jsRoute("ScheduleAppointmentPortlet.saveAppointment", ['userId'] )}
+	});
 </script>
 
-<div ng-controller="ScheduleAppointmentController" ng-init="init(${userId?c});">
+<div ng-controller="ScheduleAppointmentController" ng-init="init('${h.portletId}', ${userId?c});">
 	<h3>${h.messages.get("select-the-date-for-your-appointment")}</h3>
 	<div id="calendar"></div>
 

@@ -4,9 +4,11 @@ VikingBookingApp.controller('ScheduleAppointmentController', ['$scope', '$http',
 		return moment(hour, "H").format("hh:mm a")
 	};
 
-	$scope.init = function(userId) {
+	$scope.init = function(portletId, userId) {
+		$scope.portletData = VK.getPortletData(portletId);
+
 		$scope.userId = userId;
-		$http.get(getAvailabilityAction({userId: $scope.userId})).success(function(data) {
+		$http.get($scope.portletData.getAvailabilityAction({userId: $scope.userId})).success(function(data) {
 			console.log(data)
 			$scope.availableHours = data.availableHours || {};
 		});
@@ -36,7 +38,7 @@ VikingBookingApp.controller('ScheduleAppointmentController', ['$scope', '$http',
 		var dateMoment = moment($scope.calendarDate.timestamp).hours($scope.calendarDate.hour);
 		
 		$scope.newAppointment.dateTimestamp = new Date(dateMoment).getTime();
-		$http.post(saveAppointmentAction({userId: $scope.userId}), $scope.newAppointment).success(function(data) {
+		$http.post($scope.portletData.saveAppointmentAction({userId: $scope.userId}), $scope.newAppointment).success(function(data) {
 			if (data.success) {
 				$scope.newAppointment = {};
 				$scope.calendarDate.hour = undefined;

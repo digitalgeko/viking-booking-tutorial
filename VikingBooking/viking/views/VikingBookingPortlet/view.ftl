@@ -1,9 +1,11 @@
 <script type="text/javascript">
-	var saveAvailabilityAction = ${jsRoute("VikingBookingPortlet.saveAvailability")}
-	var getAvailabilityAction = ${jsRoute("VikingBookingPortlet.getAvailability")}
-	var i18n = ${jsi18n(['sunday','monday','tuesday','wednesday','thursday','friday','saturday'])}
+	VK.setPortletData("${h.portletId}", {
+		saveAvailabilityAction: ${jsRoute("VikingBookingPortlet.saveAvailability")},
+		getAvailabilityAction: ${jsRoute("VikingBookingPortlet.getAvailability")},
+		i18n: ${jsi18n(['sunday','monday','tuesday','wednesday','thursday','friday','saturday'])}
+	});
 </script>
-<div ng-controller="AvailabilityController">
+<div ng-controller="AvailabilityController" ng-init="init('${h.portletId}')">
 	<div class="well">
 		<p>
 			${h.messages.get("share-this-url")} <a href="${appointmentsURL}" id="appointments-link">${appointmentsURL}</a>

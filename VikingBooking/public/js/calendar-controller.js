@@ -1,7 +1,11 @@
 VikingBookingApp.controller('CalendarController', ['$scope', '$http', '$modal', function($scope, $http, $modal) {
 
+	$scope.init = function(portletId) {
+		$scope.portletData = VK.getPortletData(portletId);
+	};
+
 	$scope.events =	[];
-	$http.get(getEventsAction()).success(function(data) {
+	$http.get($scope.portletData.getEventsAction()).success(function(data) {
 		_.each(data, function (ev) {
 			var start = new Date(ev.dateTimestamp);
 			var end = new Date(moment(start).add('hours', 1));

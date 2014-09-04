@@ -1,6 +1,6 @@
 # Viking Booking
 
-This is a tutorial for the [viking framework](https://github.com/digitalgeko/viking-framework) for Liferay, we asume that you already read the [HelloWorld section](https://github.com/digitalgeko/viking-framework#hello-world) in the documentation.
+This is a tutorial for the [viking framework](https://github.com/digitalgeko/viking-framework) for Liferay, we asume that you already have read the [HelloWorld section](https://github.com/digitalgeko/viking-framework#hello-world) in the documentation.
 
 With this tutorial you'll se how to take your first steps into the framework. We're going to build a small appointment scheduler, where you set your availability and the users that have your URL, can schedule appointments to yourself.
 
@@ -15,7 +15,7 @@ Create ScheduleAppointmentPortlet with the `new-project` viking-shell command:
 ```
 viking> new-project
 ```
-Follow the wizard setting "VikingBooking" as name, we'll also be using Liferay 6.2 for this tutorial.
+Follow the wizard, set "VikingBooking" as name, we'll also be using Liferay 6.2.1 for this tutorial.
 
 You should have now the project on your filesystem at ~/viking-projects/VikingBooking-env and the viking-shell output should have changed to
 ```
@@ -26,9 +26,9 @@ This is because "VikingBooking" is the active project.
 
 Every portlets project have a default portlet named "[ProjectName]Portlet", so in this case is "VikingBookingPortlet". 
 
-Ok, let's create our first model!, we'll call it UserAvailability
+Ok, let's create our first model!, we'll call it UserAvailability.
 
-Create a class in */models/morphia/UserAvailability.groovy*, and add the following content:
+Create a class in *models/morphia/UserAvailability.groovy*, and add the following content:
 
 ```
 package models.morphia
@@ -54,22 +54,42 @@ Easy, we'll save the logged user id and a map that will have which day of the we
 
 There's a `forUserId(userId)` method, this is a helper that will return an existing record that contains all the user availability, or create a new one if no record exists.
 
-Ok, now create a form to set our availability, edit */viking/views/VikingBookingPortlet/view.ftl*
+## VikingBookingPortlet
 
-First add 3 jsRoutes:
+Ok, now create a form to set our availability, edit *viking/views/VikingBookingPortlet/view.ftl*
+
+First add 2 jsRoutes:
 ```
 <script type="text/javascript">
-	var saveAvailabilityAction = ${jsRoute("VikingBookingPortlet.saveAvailability")}
-	var getAvailabilityAction = ${jsRoute("VikingBookingPortlet.getAvailability")}
-	var i18n = ${jsi18n(['sunday','monday','tuesday','wednesday','thursday','friday','saturday'])}
+	VK.setPortletData("${h.portletId}", {
+		saveAvailabilityAction: ${jsRoute("VikingBookingPortlet.saveAvailability")},
+		getAvailabilityAction: ${jsRoute("VikingBookingPortlet.getAvailability")},
+		i18n: ${jsi18n(['sunday','monday','tuesday','wednesday','thursday','friday','saturday'])}
+	});
 </script>
 ```
-`saveAvailabilityAction` will be used to save the user's availability, `getAvailabilityAction`, will be used to get it, and `i18n` is a js function to interationalize keys.
 
-As we are using angular, we'll define angular controllers. Create a file at /public/js/availability-controller.js, every script located in /public/js will be automatically included when you deploy your project.
+We're using `VK.setPortletData` to share javascript variables between this view and the angular controller, we'll se how to retrieve these variables in a moment.
 
+Next we have `jsRoute`, which creates a javascript function that will return a string URL with the **controller** and **method** specified in the first parameter (i.e. *"VikingBookingPortlet.saveAvailability"*), this function can also take parameters to send them in the URL, we'll se how to do that when we define our *ScheduleAppointmentPortlet*.
+
+`saveAvailabilityAction` and `getAvailabilityAction` will be used to **save** and **get** the user's availability respectively.
+
+We used `jsi18n` to create `i18n`, a javascript function to interationalize keys. Simply pass the keys you want to have in the function to inernationalize them later.
+
+As we are using angular, we'll define angular controllers. Create a file at *public/js/availability-controller.js*, every script located in /public/js will be automatically included when you deploy your project.
+
+**public/js/availability-controller.js**
 ```
 VikingBookingApp.controller('AvailabilityController', ['$scope', '$http', '$timeout', function($scope, $http, $timeout) {
+	
+	$scope.init = function(portletId) {
+		$scope.portletData = VK.getPortletData(portletId);
+		$http.get($scope.portletData.getAvailabilityAction()).success(function(data) {
+			$scope.availableHours = data.availableHours || {};
+		});
+	};
+
 	$scope.weekDays = [
 		{index:0, label: "sunday"},
 		{index:1, label: "monday"},
@@ -88,13 +108,9 @@ VikingBookingApp.controller('AvailabilityController', ['$scope', '$http', '$time
 
 	$scope.formatHour = function(hour) {
 		if (hour == 24) hour = 0;
-		return moment(hour, "H").format("hh:mm a")
+		return moment(hour, "H").format("hh:mm a");
 	};
 
-	$http.get(getAvailabilityAction()).success(function(data) {
-		$scope.availableHours = data.availableHours || {};
-	});
-	
 	$scope.status = {
 		setAvailability: false,
 		showSuccessMessage: false
@@ -106,14 +122,14 @@ VikingBookingApp.controller('AvailabilityController', ['$scope', '$http', '$time
 	};
 
 	$scope.saveAvailability = function() {
-		$http.post(saveAvailabilityAction(), $scope.availableHours).success(function(data) {
+		$http.post($scope.portletData.saveAvailabilityAction(), $scope.availableHours).success(function(data) {
 			$scope.status.setAvailability = false;
 			$scope.status.showSuccessMessage = true;
 		});
 	};
 
 	$scope.messages = function(key) {
-		return i18n(key)
+		return $scope.portletData.i18n(key);
 	};
 
 }]);
@@ -122,7 +138,16 @@ VikingBookingApp.controller('AvailabilityController', ['$scope', '$http', '$time
 Here we define the days of the week we are going to set the availability, save it and retrieve it. And some helper functions that we'll use to handle our user interface.
 
 Ok, add the following html form to the view:
+
+**viking/views/VikingBookingPortlet/view.ftl**
 ```
+<script type="text/javascript">
+	VK.setPortletData("${h.portletId}", {
+		saveAvailabilityAction: ${jsRoute("VikingBookingPortlet.saveAvailability")},
+		getAvailabilityAction: ${jsRoute("VikingBookingPortlet.getAvailability")},
+		i18n: ${jsi18n(['sunday','monday','tuesday','wednesday','thursday','friday','saturday'])}
+	});
+</script>
 <div ng-controller="AvailabilityController">
 	<div class="well">
 		<p>
@@ -157,9 +182,12 @@ Ok, add the following html form to the view:
 	</div>
 </div>
 ```
+
 Here we'll show the link that he'll share to his users, and the form to set his availabity.
 
-Finally, the controller at */viking/controllers/VikingBookingPortlet.groovy*
+Finally, the controller.
+
+**viking/controllers/VikingBookingPortlet.groovy**
 ```
 package controllers
 
@@ -228,7 +256,7 @@ We're done with the portlet, deploy it with the `deploy` command:
 VikingBooking> deploy
 ```
 
-Edit your */sitebuilder/sites.groovy* to:
+Edit your *sitebuilder/sites.groovy* to:
 ```
 def build(b) {
 	b.site("Guest") {
@@ -248,14 +276,15 @@ And run the site builder `build-site` command:
 VikingBooking> build-site
 ```
 
-This will connect to your local liferay (or the one specified in */conf/sitebuilder.conf*) and create (or update) the layout (page) named "Home" and will add our portlet in the first column.
+This will connect to your local liferay (or the one specified in *conf/sitebuilder.conf*) and create (or update) the layout (page) named "Home" and will add our portlet in the first column.
 
-Go to to [http://localhost:8080/group/guest/home](http://localhost:8080/group/guest/home) to see the portlet in action.
+Go to to [http://localhost:8080/group/vikingbooking/home](http://localhost:8080/group/vikingbooking/home) to see the portlet in action.
 
 Ok, now that we have our availability set, we can now share the URL to our users, and start getting appointments!
 
 Start by defining our new model "Event", that will represent our appointments, the model should look like:
 
+**viking/models/morphia/Event.groovy**
 ```
 package models.morphia
 
@@ -290,6 +319,8 @@ class Event extends Model {
 }
 ```
 
+## ScheduleAppointmentPortlet
+
 Let's proceed to define our controller; every viking project can have any number of portlets, every controller that ends with "Portlet" in his class name, will be treated as one.
 
 Let's create a new portlet with the `add-portlet` command.
@@ -306,12 +337,16 @@ Notice that we didn't add "Portlet" in the name, because viking will add it for 
 Open your view file and create 2 jsRoutes, one to get the availability and the other to set it:
 ```
 <script type="text/javascript">
-	var getAvailabilityAction = ${jsRoute("ScheduleAppointmentPortlet.getUserAvailability", ['userId'] )}
-	var saveAppointmentAction = ${jsRoute("ScheduleAppointmentPortlet.saveAppointment", ['userId'] )}
+	VK.setPortletData("${h.portletId}", {
+		getAvailabilityAction: ${jsRoute("ScheduleAppointmentPortlet.getUserAvailability", ['userId'] )},
+		saveAppointmentAction: ${jsRoute("ScheduleAppointmentPortlet.saveAppointment", ['userId'] )}
+	});
 </script>
 ```
 
-Then, create an angular controller in */public/js/set-availability-controller.js* with:
+Then, create an angular controller
+
+**public/js/set-availability-controller.js**
 
 ```
 VikingBookingApp.controller('ScheduleAppointmentController', ['$scope', '$http', function($scope, $http) {
@@ -370,7 +405,16 @@ VikingBookingApp.controller('ScheduleAppointmentController', ['$scope', '$http',
 Here we define 2 main functions `$scope.saveAppointment` where we save our availability, and `$scope.init` where we get the availability that's saved in the database.
 
 Now, the html form:
+
+**viking/views/ScheduleAppointmentPortlet/view.ftl**
 ```
+<script type="text/javascript">
+	VK.setPortletData("${h.portletId}", {
+		getAvailabilityAction: ${jsRoute("ScheduleAppointmentPortlet.getUserAvailability", ['userId'] )},
+		saveAppointmentAction: ${jsRoute("ScheduleAppointmentPortlet.saveAppointment", ['userId'] )}
+	});
+</script>
+
 <div ng-controller="ScheduleAppointmentController" ng-init="init(${userId?c});">
 	<h3>${h.messages.get("select-the-date-for-your-appointment")}</h3>
 	<div id="calendar"></div>
@@ -433,9 +477,9 @@ Now, the html form:
 </div>
 ```
 
-Add it to the portlet's view at */vikingbookingapp/ScheduleAppointmentPortlet/view.ftl*
+And finally our controller
 
-And finally our controller at *viking/controllers/ScheduleAppointmentPortlet.groovy*:
+**viking/controllers/ScheduleAppointmentPortlet.groovy**
 ```
 package controllers
 
@@ -496,7 +540,7 @@ class ScheduleAppointmentPortlet extends Controller {
 
 We've defined our methods to get and set your appointments.
 
-Update your **/sitebuilder/sites.groovy** to:
+Update your **sitebuilder/sites.groovy** to:
 
 ```
 def build(b) {
@@ -532,13 +576,18 @@ VikingBooking> build-site
 
 Copy the url that we set in VikingBookingPortlet view and open it in another browser (or another session, like a new chrome's incognito window), and schedule an appointment.
 
+
+## CalendarPortlet
+
 Ok, to conclude this tutorial we now need to see our scheduled appointments, let's create our last portlet:
 
 ```
 VikingBooking> add-portlet --name CalendarPortlet
 ```
 
-The controller *viking/controllers/CalendarPortlet.groovy*:
+Let's define CalendarPortlet
+
+**viking/controllers/CalendarPortlet.groovy**
 ```
 package controllers
 
@@ -575,7 +624,9 @@ class CalendarPortlet extends Controller {
 }
 ```
 
-The angular controller */public/js/calendar-controller.js*:
+The angular controller 
+
+**public/js/calendar-controller.js**
 ```
 VikingBookingApp.controller('CalendarController', ['$scope', '$http', '$modal', function($scope, $http, $modal) {
 
@@ -635,6 +686,8 @@ VikingBookingApp.controller('CalendarEventDetailsController', ['$scope', '$modal
 ```
 
 And the view:
+
+**viking/views/CalendarPortlet/view.ftl**
 ```
 <script type="text/javascript">
 	var getEventsAction = ${jsRoute("CalendarPortlet.getEvents")}
@@ -673,7 +726,7 @@ And the view:
 ```
 
 
-Update */sitebuilder/sites.groovy* to:
+Update *sitebuilder/sites.groovy* to:
 ```
 def build(b) {
 	b.site("Guest") {
