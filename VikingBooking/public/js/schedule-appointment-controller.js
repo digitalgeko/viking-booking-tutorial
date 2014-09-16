@@ -13,9 +13,7 @@ VikingBookingApp.controller('ScheduleAppointmentController', ['$scope', '$http',
 			$scope.availableHours = data.availableHours || {};
 		});
 		$(function() {
-			$('#calendar').datepicker({
-
-			}).on('changeDate', function(e) {
+			$('#calendar').datepicker({}).on('changeDate', function(e) {
 				if (e.date) {
 					var dateMoment = moment(e.date)
 					$scope.currentWeekDay = dateMoment.day();
