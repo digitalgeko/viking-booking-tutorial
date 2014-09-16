@@ -13,9 +13,9 @@
 	</div>
 	
 
-	<button id="set-availability-button" ng-click="showAvailabilityForm()" ng-show="!status.setAvailability">${h.messages.get("set-availability")}</button>
+	<button class="btn" id="set-availability-button" ng-click="showAvailabilityForm()" ng-show="!status.setAvailability">${h.messages.get("set-availability")}</button>
 	<div ng-show="status.setAvailability">
-		<button id="save-availability-button" ng-click="saveAvailability()">${h.messages.get("save")}</button>
+		<button class="btn" id="save-availability-button" ng-click="saveAvailability()">${h.messages.get("save")}</button>
 		<table class="table">
 			<thead>
 				<tr>
