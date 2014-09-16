@@ -117,7 +117,7 @@ VikingBookingApp.controller('AvailabilityController', ['$scope', '$http', '$time
 	};
 
 	$scope.showAvailabilityForm = function() {
-		$scope.status.setAvailability = !status.setAvailability;
+		$scope.status.setAvailability = !$scope.status.setAvailability;
 		$scope.status.showSuccessMessage = false;
 	};
 
