@@ -14,16 +14,16 @@ VikingBookingApp.controller('ScheduleAppointmentController', ['$scope', '$http',
 		});
 		$(function() {
 			$('#calendar').datepicker({}).on('changeDate', function(e) {
-				if (e.date) {
-					var dateMoment = moment(e.date)
-					$scope.currentWeekDay = dateMoment.day();
-					$scope.calendarDate.timestamp = e.date.getTime();	
-				} else {
-					$scope.currentWeekDay = undefined;
-					$scope.calendarDate.timestamp = undefined;
-				}
-				
-				$scope.$apply();
+				$scope.$apply(function() {
+					if (e.date) {
+						var dateMoment = moment(e.date)
+						$scope.currentWeekDay = dateMoment.day();
+						$scope.calendarDate.timestamp = e.date.getTime();	
+					} else {
+						$scope.currentWeekDay = undefined;
+						$scope.calendarDate.timestamp = undefined;
+					}
+				});
 			});
 		});
 	};

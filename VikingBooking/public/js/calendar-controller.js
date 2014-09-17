@@ -2,25 +2,25 @@ VikingBookingApp.controller('CalendarController', ['$scope', '$http', '$modal', 
 
 	$scope.init = function(portletId) {
 		$scope.portletData = VK.getPortletData(portletId);
+		$http.get($scope.portletData.getEventsAction()).success(function(data) {
+			_.each(data, function (ev) {
+				var start = new Date(ev.dateTimestamp);
+				var end = new Date(moment(start).add('hours', 1));
+				$scope.events.push ({
+					title: ev.name,
+					start: start,
+					end: end,
+					allDay: false,
+					name: ev.name,
+					email: ev.email,
+					phone: ev.phone,
+					note: ev.note
+				});
+			});
+		});
 	};
 
 	$scope.events =	[];
-	$http.get($scope.portletData.getEventsAction()).success(function(data) {
-		_.each(data, function (ev) {
-			var start = new Date(ev.dateTimestamp);
-			var end = new Date(moment(start).add('hours', 1));
-			$scope.events.push ({
-				title: ev.name,
-				start: start,
-				end: end,
-				allDay: false,
-				name: ev.name,
-				email: ev.email,
-				phone: ev.phone,
-				note: ev.note
-			});
-		});
-	});
 	
 	$scope.uiConfig = {
 		calendar:{

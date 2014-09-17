@@ -9,7 +9,7 @@ import geb.Page
  */
 class ScheduleAppointmentsPage extends Page{
 
-	static url = "/group/guest/home"
+	static url = "/group/vikingbooking/home"
 
 	static at = {
 		getPageUrl() == url

@@ -23,7 +23,6 @@
             <header-portlet-css>/css/main.css</header-portlet-css>
             <header-portlet-css>/css/datepicker.css</header-portlet-css>
             <header-portlet-css>/css/fullcalendar.css</header-portlet-css>
-            <header-portlet-css>/css/darktooltip.min.css</header-portlet-css>
             <header-portlet-javascript>/js/jquery-1.10.2.min.js</header-portlet-javascript>
             <header-portlet-javascript>/jquery-ui/ui/jquery-ui.js</header-portlet-javascript>
             

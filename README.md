@@ -21,8 +21,135 @@ You should have now the project on your filesystem at ~/viking-projects/VikingBo
 ```
 VikingBooking>
 ```
-
 This is because "VikingBooking" is the active project.
+
+### External libraries
+We need to add some external javascript libraries in order to show components we'll be using in our scheduling app.
+
+You can download a zip for this project here:
+
+[https://github.com/digitalgeko/viking-booking-tutorial/archive/master.zip](https://github.com/digitalgeko/viking-booking-tutorial/archive/master.zip)
+
+And copy the libraries described below.
+
+#### JavaScript libraries
+
+Add the following scripts:
+
+```
+public/js/angular/calendar.js
+public/js/angular/checklist-model.js
+public/js/angular/fullcalendar.min.js
+public/js/angular/gcal.js
+public/js/angular/ui-bootstrap-0.8.0.min.js
+public/js/angular/ui-bootstrap-tpls-0.8.0.min.js
+
+public/js/bootstrap-datepicker.js
+public/js/jquery-1.10.2.min.js
+public/js/moment.min.js
+public/js/underscore-min.js
+
+public/jquery-ui/*
+```
+
+#### CSS libraries
+
+Add the following css files as well:
+```
+publicdatepicker.css
+fullcalendar.css
+```
+
+#### Change liferay-portlet.xml
+
+There's a hidden folder named `.tempaltes` in your portlets project. It contains various xml liferay templates that you might need to change in some cases, we are working on supporting every liferay property so you won't need to touch these templates, but since then, we will need to do some modifications when you need to set a non supported property.
+
+Edit **.templates/conf/liferay-portlet.xml**
+
+Add the following lines right below `<header-portlet-css>/css/main.css</header-portlet-css>`:
+```
+<header-portlet-css>/css/datepicker.css</header-portlet-css>
+<header-portlet-css>/css/fullcalendar.css</header-portlet-css>
+```
+
+And then the js files after `<footer-portlet-javascript>/js/angular/angular.min.js</footer-portlet-javascript>`:
+
+```
+<footer-portlet-javascript>/js/angular/ui-bootstrap-0.8.0.min.js</footer-portlet-javascript>
+<footer-portlet-javascript>/js/angular/ui-bootstrap-tpls-0.8.0.min.js</footer-portlet-javascript>
+<footer-portlet-javascript>/js/angular/fullcalendar.min.js</footer-portlet-javascript>
+<footer-portlet-javascript>/js/angular/gcal.js</footer-portlet-javascript>
+<footer-portlet-javascript>/js/angular/calendar.js</footer-portlet-javascript>
+<footer-portlet-javascript>/js/angular/checklist-model.js</footer-portlet-javascript>
+```
+
+Your liferay-portlet.xml should look like:
+```
+<?xml version="1.0"?>
+<!DOCTYPE liferay-portlet-app PUBLIC "-//Liferay//DTD Portlet Application 6.1.0//EN" "http://www.liferay.com/dtd/liferay-portlet-app_6_1_0.dtd">
+
+<liferay-portlet-app>
+    <% def vkCtrlPath = 'viking' + File.separator + 'controllers' + File.separator %>
+    <% portlets.each { portlet ->
+        dashedName = portlet.replaceAll(/(\B[A-Z])/, '-$1').toLowerCase() - vkCtrlPath - '.groovy'
+        dashedPortletName = dashedName
+        portletName = portlet - vkCtrlPath - 'Portlet.groovy'
+        portletConf = conf[portletName]
+        %>
+        <portlet>
+            <portlet-name>${dashedName}</portlet-name>
+            <icon>/icon.png</icon>
+            <friendly-url-mapper-class>com.liferay.portal.kernel.portlet.DefaultFriendlyURLMapper</friendly-url-mapper-class>
+            <friendly-url-mapping>${dashedPortletName}</friendly-url-mapping>
+            <friendly-url-routes>urlmappings/${dashedName}-friendly-url-routes.xml</friendly-url-routes>
+            <% if (portletConf.controlPanel) { %>
+                    <control-panel-entry-category>${portletConf.controlPanel.category}</control-panel-entry-category>
+                    <control-panel-entry-weight>${portletConf.controlPanel.weight}</control-panel-entry-weight>
+            <% } %>
+            <instanceable>${portletConf.instanceable?:false}</instanceable>
+            <header-portlet-css>/css/main.css</header-portlet-css>
+            <header-portlet-css>/css/datepicker.css</header-portlet-css>
+            <header-portlet-css>/css/fullcalendar.css</header-portlet-css>
+            <header-portlet-javascript>/js/jquery-1.10.2.min.js</header-portlet-javascript>
+            <header-portlet-javascript>/jquery-ui/ui/jquery-ui.js</header-portlet-javascript>
+            
+            <header-portlet-javascript>/js/lib/viking.js</header-portlet-javascript>
+            <footer-portlet-javascript>/js/angular/angular.min.js</footer-portlet-javascript>
+            <footer-portlet-javascript>/js/angular/ui-bootstrap-0.8.0.min.js</footer-portlet-javascript>
+            <footer-portlet-javascript>/js/angular/ui-bootstrap-tpls-0.8.0.min.js</footer-portlet-javascript>
+            <footer-portlet-javascript>/js/angular/fullcalendar.min.js</footer-portlet-javascript>
+            <footer-portlet-javascript>/js/angular/gcal.js</footer-portlet-javascript>
+            <footer-portlet-javascript>/js/angular/calendar.js</footer-portlet-javascript>
+            <footer-portlet-javascript>/js/angular/checklist-model.js</footer-portlet-javascript>
+            <footer-portlet-javascript>/js/angular/init.js</footer-portlet-javascript>
+
+            <% javascripts.each { javascript -> %>
+                <footer-portlet-javascript>/js/${javascript}</footer-portlet-javascript>
+            <% } %>
+        </portlet>
+    <% } %>
+
+    <role-mapper>
+        <role-name>administrator</role-name>
+        <role-link>Administrator</role-link>
+    </role-mapper>
+    <role-mapper>
+        <role-name>guest</role-name>
+        <role-link>Guest</role-link>
+    </role-mapper>
+    <role-mapper>
+        <role-name>power-user</role-name>
+        <role-link>Power User</role-link>
+    </role-mapper>
+    <role-mapper>
+        <role-name>user</role-name>
+        <role-link>User</role-link>
+    </role-mapper>
+</liferay-portlet-app>
+```
+
+
+## VikingBookingPortlet
 
 Every portlets project have a default portlet named "[ProjectName]Portlet", so in this case is "VikingBookingPortlet". 
 
@@ -54,8 +181,6 @@ Easy, we'll save the logged user id and a map that will have which day of the we
 
 There's a `forUserId(userId)` method, this is a helper that will return an existing record that contains all the user availability, or create a new one if no record exists.
 
-## VikingBookingPortlet
-
 Ok, now create a form to set our availability, edit *viking/views/VikingBookingPortlet/view.ftl*
 
 First add 2 jsRoutes:
@@ -75,7 +200,14 @@ Next we have `jsRoute`, which creates a javascript function that will return a s
 
 `saveAvailabilityAction` and `getAvailabilityAction` will be used to **save** and **get** the user's availability respectively.
 
-We used `jsi18n` to create `i18n`, a javascript function to interationalize keys. Simply pass the keys you want to have in the function to inernationalize them later.
+We used `jsi18n` to create `i18n`, a javascript function to interationalize keys. Simply pass the keys you want to have in the function to inernationalize them later. Internationalization keys are defined in:
+
+**i18n/Language.properties**
+
+or
+
+**i18n/Language.properties_langID**, for example ***i18n/Language\_en_US.properties***
+
 
 As we are using angular, we'll define angular controllers. Create a file at *public/js/availability-controller.js*, every script located in /public/js will be automatically included when you deploy your project.
 
@@ -249,7 +381,50 @@ class VikingBookingPortlet extends Controller {
 }
 ```
 
-Here we have our methods to get and set the user's availability, as well as the share url creation.
+There are a few things to notice here:
+
+This is our first controller, and we see annotations above every method `@Render` and `@Resource(mode="view")` so far. We have lifecycle annotations `@Render`, `@Action` and `@Resource`, and each annotation have a `mode` attribute that can be either `view` or `edit`. The mode is mainly to prevent requests to methods that doesn't have permissions to access to. 
+
+Next, check the configuration variable `Conf.properties.persistance.database` that we need to define in our `portlet.conf` file.
+
+Go to **conf/portlet.conf** and add the property `persistance.database = 'mongo'`. This property is purely arbitrary and it has nothing to do with the framework, you can define whichever configuration property in this file and it will be available under `Conf.properties` map. We are using it just to switch between *morphia* and *hibernate* models in our code, as we can see in the code above.
+
+We also see that we're using a friendlyURL `/-/schedule-appointment-portlet/render/view/${h.user.userId}` to build the `appointmentsURL`. We'll see how to define `userId` as a place holder for the friendly url when we create the *ScheduleAppointmentPortlet*.
+
+Your portlet.conf file should look like this:
+
+**conf/portlet.conf**
+
+```
+mongo.db.host="127.0.0.1"
+mongo.db.name="VikingBooking"
+// mongo.db.username=
+// mongo.db.password=
+
+hibernate.hbm2ddl.auto = "update"
+
+persistance.database = 'mongo'
+
+bonecp {
+	partitionCount=3
+	maxConnectionsPerPartition=15
+	minConnectionsPerPartition=2
+	acquireIncrement=3	
+}
+
+VikingBooking {
+	instanceable = false
+
+	display {
+		// category = "category.hidden"
+	}
+
+	modes="VIEW,EDIT"
+
+}
+```
+
+We also have our methods to get and set the user's availability, as well as the share url creation.
 
 We're done with the portlet, deploy it with the `deploy` command:
 ```
@@ -259,7 +434,7 @@ VikingBooking> deploy
 Edit your *sitebuilder/sites.groovy* to:
 ```
 def build(b) {
-	b.site("Guest") {
+	b.site("VikingBooking") {
 		layout("Home") {
 			override true
 			layoutTemplateId "1_column"
@@ -334,7 +509,18 @@ Notice that we didn't add "Portlet" in the name, because viking will add it for 
 * VikingBooking**Portlet**.groovy
 * and ScheduleAppointment**Portlet**.groovy
 
-Open your view file and create 2 jsRoutes, one to get the availability and the other to set it:
+
+Now let's configure this portlet to receive a `userId` parameter in it's friendly URl as we saw in the last section, open you portlet.conf and add in the bottom of the file:
+
+```
+ScheduleAppointment {
+	renderUrlParams = "userId"
+}
+```
+
+`renderUrlParams` is a a string with comma separated variables we want to bind in the friendly URL.
+
+Now open your view file and create 2 jsRoutes, one to get the availability and the other to set it:
 ```
 <script type="text/javascript">
 	VK.setPortletData("${h.portletId}", {
@@ -542,7 +728,7 @@ Update your **sitebuilder/sites.groovy** to:
 
 ```
 def build(b) {
-	b.site("Guest") {
+	b.site("VikingBooking") {
 		layout("Home") {
 			override true
 			layoutTemplateId "1_column"
@@ -580,7 +766,7 @@ Copy the url that we set in VikingBookingPortlet view and open it in another bro
 Ok, to conclude this tutorial we now need to see our scheduled appointments, let's create our last portlet:
 
 ```
-VikingBooking> add-portlet --name CalendarPortlet
+VikingBooking> add-portlet --name Calendar
 ```
 
 Let's define CalendarPortlet
@@ -727,7 +913,7 @@ And the view:
 Update *sitebuilder/sites.groovy* to:
 ```
 def build(b) {
-	b.site("Guest") {
+	b.site("VikingBooking") {
 		layout("Home") {
 			override true
 			layoutTemplateId "1_column"

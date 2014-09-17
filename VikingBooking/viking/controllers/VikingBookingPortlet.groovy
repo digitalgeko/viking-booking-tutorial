@@ -11,7 +11,7 @@ class VikingBookingPortlet extends Controller {
 
     @Render
     def view() {
-     	def appointmentsURL = PortalUtil.getPortalURL(request) + "/web/guest/schedule-appointment/-/schedule-appointment-portlet/render/view/${h.user.userId}"
+     	def appointmentsURL = PortalUtil.getPortalURL(request) + "/web/vikingbooking/schedule-appointment/-/schedule-appointment-portlet/render/view/${h.user.userId}"
 		[appointmentsURL: appointmentsURL]
     }
 

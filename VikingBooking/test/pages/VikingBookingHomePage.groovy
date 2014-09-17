@@ -9,7 +9,7 @@ import geb.Page
  */
 class VikingBookingHomePage extends Page{
 
-	static url = "/group/guest/home"
+	static url = "/group/vikingbooking/home"
 
 	static at = {
 		getPageUrl() == url

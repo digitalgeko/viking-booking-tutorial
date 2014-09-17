@@ -1,4 +1,4 @@
-VikingBookingApp.controller('AvailabilityController', ['$scope', '$http', '$timeout', function($scope, $http, $timeout) {
+VikingBookingApp.controller('AvailabilityController', ['$scope', '$http', function($scope, $http) {
 	
 	$scope.init = function(portletId) {
 		$scope.portletData = VK.getPortletData(portletId);
